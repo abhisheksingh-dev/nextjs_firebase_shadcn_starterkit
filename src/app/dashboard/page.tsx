@@ -1,7 +1,9 @@
+import { Button } from "@/components/ui/button";
+import { ServerLogout } from "@/services/auth/serverLogout";
 import React from "react";
 
 const dashboard = () => {
-  return <div></div>;
+  return <div>{/* <Button onClick={ServerLogout}>Logout</Button> */}</div>;
 };
 
 export default dashboard;

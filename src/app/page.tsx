@@ -7,7 +7,7 @@ import { z } from "zod";
 
 // Define a Zod schema for login validation.
 export const loginSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -22,19 +22,51 @@ export default async function LandingPage() {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center text-center min-h-screen w-screen">
-      <div className="w-fit space-y-5">
-        <span>LOGIN</span>
-        {/* The form action calls the server action loginWithEmailAndPassword */}
+    <main className="min-h-screen flex justify-center items-center bg-gray-100">
+      <div className="p-8 rounded-2xl shadow-lg bg-white w-96">
+        <img
+          src="https://placehold.co/300x100"
+          alt="Logo"
+          className="rounded-xl mb-2 mx-auto"
+        />
+        <h2 className="text-center text-xl font-semibold mb-4">Login</h2>
         <form
           action={loginWithEmailAndPassword}
-          method="post"
-          className="space-y-3"
+          className="space-y-4 w-full flex flex-col"
         >
-          <Input name="email" placeholder="Email" type="email" />
-          <Input name="password" type="password" placeholder="Password" />
-          <Button type="submit">Login</Button>
-          {error && <span>Error {error.value}</span>}
+          <div>
+            <Input
+              name="email"
+              placeholder="Email"
+              type="email"
+              className="w-full"
+            />
+            {error?.value === "invalid_email" && (
+              <p className="text-red-500 text-sm mt-1">Invalid email address</p>
+            )}
+          </div>
+          <div>
+            <Input
+              name="password"
+              type="password"
+              placeholder="Password"
+              className="w-full"
+            />
+            {error?.value === "invalid_password" && (
+              <p className="text-red-500 text-sm mt-1">
+                Password must be at least 6 characters
+              </p>
+            )}
+          </div>
+          <Button type="submit" className="w-full ">
+            Login
+          </Button>
+          {error &&
+            !["invalid_email", "invalid_password"].includes(error.value) && (
+              <p className="text-red-500 text-sm text-center mt-2">
+                {error.value}
+              </p>
+            )}
         </form>
       </div>
     </main>
