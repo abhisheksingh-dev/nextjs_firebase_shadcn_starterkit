@@ -6,8 +6,9 @@ const key = "sideBarDisplayState";
 export async function toggleSideBar() {
   const cookieStore = await cookies();
   const currentState = cookieStore.get(key);
-  cookieStore.set(
-    key,
-    !currentState ? "hide" : currentState.value === "show" ? "hide" : "show"
-  );
+  if (!currentState) {
+    cookieStore.set(key, "hide");
+    return;
+  }
+  cookieStore.set(key, currentState.value === "show" ? "hide" : "show");
 }
