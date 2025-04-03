@@ -21,6 +21,14 @@ export default async function LandingPage() {
     redirect("/dashboard");
   }
 
+  async function handleLogin(formData: FormData) {
+    "use server";
+    const res = await loginWithEmailAndPassword(formData);
+    if (res && res.success) {
+      redirect(res.redirect);
+    }
+  }
+
   return (
     <main className="min-h-screen flex justify-center items-center bg-gray-100">
       <div className="p-8 rounded-2xl shadow-lg bg-white w-96">
@@ -30,10 +38,7 @@ export default async function LandingPage() {
           className="rounded-xl mb-2 mx-auto"
         />
         <h2 className="text-center text-xl font-semibold mb-4">Login</h2>
-        <form
-          action={loginWithEmailAndPassword}
-          className="space-y-4 w-full flex flex-col"
-        >
+        <form action={handleLogin} className="space-y-4 w-full flex flex-col">
           <div>
             <Input
               name="email"
